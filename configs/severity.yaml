@@ -1,0 +1,26 @@
+jigsaw:
+  weights:
+    toxic: 1
+    obscene: 1
+    insult: 1
+    identity_hate: 2
+    threat: 2
+    severe_toxic: 3
+  bins:
+    low: [1, 2]
+    medium: [3, 4]
+    high: [5, 6]
+    critical: [7, 999]
+
+mhs:
+  critical:
+    genocide_min: 1.0
+    violence_min: 3.0
+  high:
+    hate_speech_score_exclusive_min: 2.0
+    dehumanize_min: 2.5
+  medium:
+    hate_speech_score_exclusive_min: 0.5
+    insult_min: 3.0
+
+min_level_share: 0.03

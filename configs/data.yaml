@@ -1,0 +1,43 @@
+seed: 42
+
+jigsaw:
+  competition: jigsaw-toxic-comment-classification-challenge
+  raw_dir: data/raw/jigsaw
+  id_column: id
+  text_column: comment_text
+  label_columns: [toxic, severe_toxic, obscene, threat, insult, identity_hate]
+
+mhs:
+  dataset_id: ucberkeley-dlab/measuring-hate-speech
+  config_name: default
+  cache_dir: data/raw/hf
+  id_column: comment_id
+  text_column: text
+  score_column: hate_speech_score
+  rating_columns: [insult, humiliate, dehumanize, violence, genocide, attack_defend, hatespeech]
+  target_columns:
+    - target_race
+    - target_religion
+    - target_origin
+    - target_gender
+    - target_sexuality
+    - target_age
+    - target_disability
+    - target_politics
+
+text:
+  min_chars: 3
+  max_repeat: 3
+
+split:
+  folds: 10
+  val_fold: 1
+  test_fold: 0
+
+outputs:
+  jigsaw: data/interim/jigsaw.parquet
+  jigsaw_unlabeled: data/interim/jigsaw_unlabeled.parquet
+  mhs: data/interim/mhs.parquet
+  mhs_annotators: data/interim/mhs_annotator_level.parquet
+  unified: data/processed/unified.parquet
+  reports: reports/data

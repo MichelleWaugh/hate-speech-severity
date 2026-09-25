@@ -1,0 +1,48 @@
+{
+  "class_counts_by_source": {
+    "jigsaw": {
+      "hate": 1972,
+      "neither": 201081,
+      "offensive": 19807,
+      "threat": 689
+    },
+    "mhs": {
+      "hate": 7476,
+      "neither": 15794,
+      "offensive": 12541,
+      "threat": 3754
+    }
+  },
+  "conflicting_groups": 103,
+  "duplicate_groups": 957,
+  "duplicate_rows": 2522,
+  "split_counts_by_source": {
+    "jigsaw": {
+      "test": 22355,
+      "train": 178840,
+      "val": 22354
+    },
+    "mhs": {
+      "test": 3957,
+      "train": 31651,
+      "val": 3957
+    }
+  },
+  "target_group_counts": {
+    "t_age": 1545,
+    "t_disability": 1384,
+    "t_gender": 16667,
+    "t_origin": 9300,
+    "t_politics": 3665,
+    "t_race": 14697,
+    "t_religion": 7272,
+    "t_sexuality": 8972
+  },
+  "text_length_percentiles": {
+    "50": 177.0,
+    "90": 767.0,
+    "95": 1201.0,
+    "99": 3119.0
+  },
+  "total_rows": 263114
+}

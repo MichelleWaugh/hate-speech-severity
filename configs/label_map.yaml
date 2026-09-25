@@ -1,0 +1,19 @@
+priority: [threat, hate, offensive, neither]
+
+jigsaw:
+  threat: [threat]
+  hate: [identity_hate]
+  offensive: [toxic, severe_toxic, obscene, insult]
+
+mhs:
+  threat:
+    column: m_violence
+    min: 2.5
+  hate:
+    column: m_hate_speech_score
+    min_exclusive: 0.5
+  offensive:
+    column: m_insult
+    min: 2.5
+
+min_class_share: 0.02

@@ -1,0 +1,56 @@
+{
+  "jigsaw_score_quantiles": {
+    "50": 2.0,
+    "75": 3.0,
+    "90": 5.0,
+    "95": 6.0,
+    "99": 8.0
+  },
+  "mhs_score_quantiles": {
+    "50": 3.8600001335144043,
+    "75": 6.0,
+    "90": 8.569999694824219,
+    "95": 10.639999389648438,
+    "99": 13.956332969665521
+  },
+  "severity_by_class": {
+    "hate": {
+      "critical": 1939,
+      "high": 4845,
+      "low": 68,
+      "medium": 2596
+    },
+    "offensive": {
+      "critical": 1932,
+      "high": 4019,
+      "low": 15056,
+      "medium": 11341
+    },
+    "threat": {
+      "critical": 3744,
+      "high": 388,
+      "low": 41,
+      "medium": 270
+    }
+  },
+  "severity_by_source": {
+    "jigsaw": {
+      "critical": 623,
+      "high": 2568,
+      "low": 12764,
+      "medium": 6513
+    },
+    "mhs": {
+      "critical": 6992,
+      "high": 6684,
+      "low": 2401,
+      "medium": 7694
+    }
+  },
+  "severity_share_overall": {
+    "critical": 0.16468781764311513,
+    "high": 0.2000908324141958,
+    "low": 0.32796989554272366,
+    "medium": 0.3072514543999654
+  }
+}
