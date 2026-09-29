@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 from dataclasses import replace
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import torch
@@ -17,7 +16,7 @@ from hsd.models.multitask import ModelConfig, XLMRMultiTask
 from hsd.training.datamodule import build_eval_loader, build_train_loader
 from hsd.training.sampler import LengthGroupedSampler
 from hsd.training.tokenization import TokenizationConfig, tokenize_dataset
-from hsd.training.trainer import Trainer, TrainConfig, load_train_config, seed_everything
+from hsd.training.trainer import TrainConfig, Trainer, load_train_config, seed_everything
 
 logger = get_logger(__name__)
 
@@ -53,7 +52,9 @@ def subsample(dataset: Dataset, limit: int, seed: int) -> Dataset:
     return shuffled.select(range(min(limit, len(shuffled))))
 
 
-def resampled_epoch_labels(train_loader: torch.utils.data.DataLoader, dataset: Dataset) -> np.ndarray:
+def resampled_epoch_labels(
+    train_loader: torch.utils.data.DataLoader, dataset: Dataset
+) -> np.ndarray:
     sampler = train_loader.sampler
     if not isinstance(sampler, LengthGroupedSampler) or sampler.resampler is None:
         raise TypeError("train loader must use LengthGroupedSampler with an EpochResampler")

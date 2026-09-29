@@ -1,9 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import numpy as np
-import torch
 from sklearn.metrics import accuracy_score, f1_score, precision_recall_fscore_support
 from torch import Tensor
 
@@ -73,7 +70,9 @@ def compute_class_metrics(class_logits: np.ndarray, labels: np.ndarray) -> dict[
     }
 
 
-def compute_severity_metrics(severity_logits: np.ndarray, severities: np.ndarray) -> dict[str, float]:
+def compute_severity_metrics(
+    severity_logits: np.ndarray, severities: np.ndarray
+) -> dict[str, float]:
     valid = severities != IGNORE_INDEX
     valid_count = int(valid.sum())
     if valid_count == 0:
@@ -134,7 +133,7 @@ def select_metric(metrics: dict[str, float], selection_metric: str) -> float:
     return metrics[selection_metric]
 
 
-def tensor_to_numpy(tensor: Optional[Tensor]) -> Optional[np.ndarray]:
+def tensor_to_numpy(tensor: Tensor | None) -> np.ndarray | None:
     if tensor is None:
         return None
     return tensor.detach().cpu().numpy()

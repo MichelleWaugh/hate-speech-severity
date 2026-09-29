@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Iterator, Sequence
 from dataclasses import dataclass, field
-from typing import Iterator, Optional, Sequence
 
 import numpy as np
 import torch
@@ -44,7 +44,9 @@ class EpochResampler:
         if target_neither_size <= 0 or len(self.neither_indices) == 0:
             sampled_neither = np.array([], dtype=int)
         else:
-            sampled_neither = rng.choice(self.neither_indices, size=target_neither_size, replace=False)
+            sampled_neither = rng.choice(
+                self.neither_indices, size=target_neither_size, replace=False
+            )
         combined = np.concatenate([self.harmful_indices, sampled_neither])
         rng.shuffle(combined)
         has_targets_array = np.asarray(self.has_targets)
@@ -61,7 +63,7 @@ class LengthGroupedSampler(Sampler[int]):
         self,
         lengths: Sequence[int],
         batch_size: int,
-        resampler: Optional[EpochResampler] = None,
+        resampler: EpochResampler | None = None,
         seed: int = 42,
         mega_batch_multiplier: int = 50,
     ) -> None:
@@ -71,7 +73,7 @@ class LengthGroupedSampler(Sampler[int]):
         self.seed = seed
         self.mega_batch_multiplier = mega_batch_multiplier
         self.epoch = 0
-        self._cached_epoch: Optional[int] = None
+        self._cached_epoch: int | None = None
         self._cached_indices: list[int] = []
 
     def set_epoch(self, epoch: int) -> None:

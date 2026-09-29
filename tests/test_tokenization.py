@@ -47,7 +47,9 @@ def test_tokenize_dataset_produces_expected_columns(tmp_path: Path, sample_parqu
     dataset_dict = tokenize_dataset(config)
     assert set(dataset_dict.keys()) == {"train", "val"}
     train_dataset = dataset_dict["train"]
-    expected_columns = ["input_ids", "attention_mask", "label", "severity", "has_targets", "length"] + TARGET_COLUMNS
+    expected_columns = [
+        "input_ids", "attention_mask", "label", "severity", "has_targets", "length"
+    ] + TARGET_COLUMNS
     for column in expected_columns:
         assert column in train_dataset.column_names
 

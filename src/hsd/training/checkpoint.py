@@ -4,7 +4,7 @@ import json
 import random
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 import torch
@@ -46,7 +46,7 @@ def save_checkpoint(
     model: nn.Module,
     optimizer: Optimizer,
     scheduler: LRScheduler,
-    scaler: Optional[torch.amp.GradScaler],
+    scaler: torch.amp.GradScaler | None,
     training_state: TrainingState,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -68,7 +68,7 @@ def load_checkpoint(
     model: nn.Module,
     optimizer: Optimizer,
     scheduler: LRScheduler,
-    scaler: Optional[torch.amp.GradScaler],
+    scaler: torch.amp.GradScaler | None,
     device: torch.device,
 ) -> TrainingState:
     payload = torch.load(path, map_location=device, weights_only=False)

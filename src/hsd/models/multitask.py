@@ -4,7 +4,6 @@ from __future__ import annotations
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Optional
 
 import torch
 from torch import Tensor, nn
@@ -28,7 +27,7 @@ class ModelConfig:
         return json.dumps(asdict(self), indent=2)
 
     @classmethod
-    def from_json(cls, text: str) -> "ModelConfig":
+    def from_json(cls, text: str) -> ModelConfig:
         return cls(**json.loads(text))
 
 
@@ -79,7 +78,7 @@ class XLMRMultiTask(nn.Module):
         tokenizer.save_pretrained(output_dir)
 
     @classmethod
-    def from_pretrained(cls, model_dir: Path, device: Optional[torch.device] = None) -> "XLMRMultiTask":
+    def from_pretrained(cls, model_dir: Path, device: torch.device | None = None) -> XLMRMultiTask:
         config = ModelConfig.from_json((model_dir / "model_config.json").read_text())
         model = cls(config)
         state_dict = torch.load(model_dir / "multitask.pt", map_location=device or "cpu")

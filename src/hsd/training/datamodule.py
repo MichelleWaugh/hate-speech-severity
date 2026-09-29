@@ -37,8 +37,12 @@ class DynamicPaddingCollator:
 
         for row_index, example in enumerate(examples):
             sequence_length = len(example["input_ids"])
-            input_ids[row_index, :sequence_length] = torch.tensor(example["input_ids"], dtype=torch.long)
-            attention_mask[row_index, :sequence_length] = torch.tensor(example["attention_mask"], dtype=torch.long)
+            input_ids[row_index, :sequence_length] = torch.tensor(
+                example["input_ids"], dtype=torch.long
+            )
+            attention_mask[row_index, :sequence_length] = torch.tensor(
+                example["attention_mask"], dtype=torch.long
+            )
             labels[row_index] = int(example["label"])
             severities[row_index] = int(example["severity"])
             has_targets[row_index] = bool(example["has_targets"])
