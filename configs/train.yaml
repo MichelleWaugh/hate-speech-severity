@@ -6,7 +6,7 @@ encoder_lr: 2e-5
 head_lr: 1e-4
 weight_decay: 0.01
 layerwise_lr_decay: 0.9
-epochs: 3
+epochs: 6
 warmup_ratio: 0.06
 max_grad_norm: 1.0
 lambda_severity: 0.5
