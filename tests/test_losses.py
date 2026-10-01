@@ -1,14 +1,20 @@
+# paste the test file above
 from __future__ import annotations
 
+import numpy as np
 import torch
 
-from hsd.models.losses import MultiTaskLoss, compute_class_weights
+from hsd.models.losses import MultiTaskLoss, compute_class_weights, compute_target_label_weights
 
 
 def build_loss(lambda_severity: float = 0.5, lambda_target: float = 0.2) -> MultiTaskLoss:
-    weights = compute_class_weights([0] * 300 + [1] * 100 + [2] * 50 + [3] * 10)
+    class_weights = compute_class_weights([0] * 300 + [1] * 100 + [2] * 50 + [3] * 10)
+    targets = np.random.default_rng(0).integers(0, 2, (200, 8))
+    has_targets = np.array([True] * 200)
+    target_label_weights = compute_target_label_weights(targets, has_targets)
     return MultiTaskLoss(
-        class_weights=weights,
+        class_weights=class_weights,
+        target_label_weights=target_label_weights,
         lambda_severity=lambda_severity,
         lambda_target=lambda_target,
         label_smoothing=0.05,
@@ -39,6 +45,29 @@ def test_class_weights_decrease_with_frequency() -> None:
     weights = compute_class_weights([0] * 300 + [1] * 100 + [2] * 50 + [3] * 10)
     assert weights[3] > weights[2] > weights[1] > weights[0]
     assert abs(float(weights.mean()) - 1.0) < 1e-6
+
+
+def test_target_label_weights_favor_rare_labels() -> None:
+    targets = np.zeros((100, 8), dtype=int)
+    targets[:50, 0] = 1
+    targets[:5, 1] = 1
+    has_targets = np.array([True] * 100)
+    weights = compute_target_label_weights(targets, has_targets)
+    assert weights[1] > weights[0]
+    assert abs(float(weights.mean()) - 1.0) < 1e-5
+
+
+def test_severity_ordinal_loss_penalizes_distant_errors_more() -> None:
+    loss_fn = build_loss()
+    confident_adjacent = torch.zeros(1, 4)
+    confident_adjacent[0, 2] = 10.0
+    confident_distant = torch.zeros(1, 4)
+    confident_distant[0, 3] = 10.0
+    true_severity = torch.tensor([1])
+
+    adjacent_loss = loss_fn._severity_loss(confident_adjacent, true_severity)
+    distant_loss = loss_fn._severity_loss(confident_distant, true_severity)
+    assert distant_loss.item() > adjacent_loss.item()
 
 
 def test_jigsaw_rows_have_exactly_zero_target_loss() -> None:

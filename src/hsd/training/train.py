@@ -11,7 +11,7 @@ from transformers import AutoTokenizer
 
 from hsd.common.labels import NUM_CLASSES, NUM_SEVERITY_LEVELS, NUM_TARGET_LABELS
 from hsd.common.logging import get_logger
-from hsd.models.losses import MultiTaskLoss, compute_class_weights
+from hsd.models.losses import MultiTaskLoss, compute_class_weights, compute_target_label_weights
 from hsd.models.multitask import ModelConfig, XLMRMultiTask
 from hsd.training.datamodule import build_eval_loader, build_train_loader
 from hsd.training.sampler import LengthGroupedSampler
@@ -100,6 +100,16 @@ def main() -> None:
     class_weights = compute_class_weights(resampled_labels.tolist())
     logger.info(f"class weights={[round(float(w), 4) for w in class_weights]}")
 
+    target_names = [
+        "race", "religion", "origin", "gender", "sexuality", "age", "disability", "politics"
+    ]
+    target_array = np.stack(
+        [np.asarray(train_dataset[f"t_{name}"]) for name in target_names], axis=1
+    )
+    has_targets_array = np.asarray(train_dataset["has_targets"])
+    target_label_weights = compute_target_label_weights(target_array, has_targets_array)
+    logger.info(f"target label weights={[round(float(w), 4) for w in target_label_weights]}")
+
     model_config = ModelConfig(
         model_name=config.model_name,
         hidden_dropout=0.1,
@@ -114,6 +124,7 @@ def main() -> None:
 
     loss_fn = MultiTaskLoss(
         class_weights=class_weights,
+        target_label_weights=target_label_weights,
         lambda_severity=config.lambda_severity,
         lambda_target=config.lambda_target,
         label_smoothing=config.label_smoothing,
